@@ -1,0 +1,2 @@
+# rust-template-for-vscode-remotecontainers
+VSCodeのRemoteContainersを用いたRustのテンプレート開発環境
