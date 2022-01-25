@@ -16,12 +16,13 @@ And if you see "Dev Container: Rust Template" in the bottom left corner, you're 
 ## The following are installed.
 
 - Docker image
-    - rust:1.56-buster
+    - rust:1.58-buster
 - CLI tools
     - git
     - cargo-edit
+    - cargo-watch
 - VSCode extensions
-    - [Rust](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust)
+    - [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer)
     - [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
     - [Better TOML](https://marketplace.visualstudio.com/items?itemName=bungcip.better-toml)
     - [crates](https://marketplace.visualstudio.com/items?itemName=serayuzgur.crates)
