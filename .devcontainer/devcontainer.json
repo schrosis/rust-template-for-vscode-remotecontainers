@@ -24,7 +24,7 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"editorconfig.editorconfig",
-		"rust-lang.rust",
+        "matklad.rust-analyzer",
 		"vadimcn.vscode-lldb",
 		"bungcip.better-toml",
 		"serayuzgur.crates"
