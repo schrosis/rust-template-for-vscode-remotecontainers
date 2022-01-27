@@ -7,13 +7,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: build
+      - name: Make docker container
         run: |
-          docker compose build
+          docker compose up -d
 
-      - name: test
+      - name: Test
         run: |
-          docker compose run rust cargo test
+          docker compose run -T rust cargo test -- --show-output
