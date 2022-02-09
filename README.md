@@ -1,5 +1,7 @@
 # rust-template-for-vscode-remotecontainers
 
+[![CI](https://github.com/schrosis/rust-template-for-vscode-remotecontainers/actions/workflows/ci.yml/badge.svg)](https://github.com/schrosis/rust-template-for-vscode-remotecontainers/actions/workflows/ci.yml)
+
 Rust template development environment using VSCode's RemoteContainers
 
 ## Requirements
