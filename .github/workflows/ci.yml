@@ -3,67 +3,50 @@ name: CI
 on:
   push:
 
+env:
+  CARGO_TERM_COLOR: always
+
 jobs:
-  docker-build:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Cache Docker layer
-        uses: satackey/action-docker-layer-caching@v0.0.11
-
-      - name: Build Docker Image
-        run: |
-          docker compose build
-
-  clippy:
-    needs: docker-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Cache Docker Layer
-        uses: satackey/action-docker-layer-caching@v0.0.11
+      - name: Cache Cargo
+        uses: actions/cache@v2
         with:
-          skip-save: true
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
+
+      - name: Install Latest Stable
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.58
+          override: true
+          components: rustfmt,clippy
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
 
       - name: Run clippy
-        run: |
-          docker compose run -T rust \
-            cargo clippy -- -D warnings
-
-  rustfmt:
-    needs: docker-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Cache Docker Layer
-        uses: satackey/action-docker-layer-caching@v0.0.11
+        uses: actions-rs/clippy-check@v1
         with:
-          skip-save: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run rustfmt
-        run: |
-          docker compose run -T rust \
-            cargo fmt -- --check
-
-  test:
-    needs: docker-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Cache Docker Layer
-        uses: satackey/action-docker-layer-caching@v0.0.11
+        uses: actions-rs/cargo@v1
         with:
-          skip-save: true
+          command: fmt
+          args: -- --check
 
-      - name: Run Test
-        run: |
-          docker compose run -T rust \
-            cargo test -- --show-output
+      - name: Run test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: -- --show-output

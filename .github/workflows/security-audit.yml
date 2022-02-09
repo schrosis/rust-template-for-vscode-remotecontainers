@@ -1,0 +1,22 @@
+name: Security audit
+
+on:
+  # If you want to do security audits on a scheduled, uncomment it out and configure a schedule.
+  # schedule:
+  #   - cron: '0 15 * * *'
+  push:
+    paths:
+      - '**/Cargo.toml'
+      - '**/Cargo.lock'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Run Security Audit
+        uses: actions-rs/audit-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
