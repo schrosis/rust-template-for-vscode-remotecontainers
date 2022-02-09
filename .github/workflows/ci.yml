@@ -22,7 +22,7 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
 
-      - name: Install Latest Stable
+      - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: 1.58
