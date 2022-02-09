@@ -1,19 +1,69 @@
-name: ci
+name: CI
 
 on:
   push:
 
 jobs:
-  test:
+  docker-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Make docker container
-        run: |
-          docker compose up -d
+      - name: Cache Docker layer
+        uses: satackey/action-docker-layer-caching@v0.0.11
 
-      - name: Test
+      - name: Build Docker Image
         run: |
-          docker compose run -T rust cargo test -- --show-output
+          docker compose build
+
+  clippy:
+    needs: docker-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache Docker Layer
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        with:
+          skip-save: true
+
+      - name: Run clippy
+        run: |
+          docker compose run -T rust \
+            cargo clippy -- -D warnings
+
+  rustfmt:
+    needs: docker-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache Docker Layer
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        with:
+          skip-save: true
+
+      - name: Run rustfmt
+        run: |
+          docker compose run -T rust \
+            cargo fmt -- --check
+
+  test:
+    needs: docker-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache Docker Layer
+        uses: satackey/action-docker-layer-caching@v0.0.11
+        with:
+          skip-save: true
+
+      - name: Run Test
+        run: |
+          docker compose run -T rust \
+            cargo test -- --show-output
