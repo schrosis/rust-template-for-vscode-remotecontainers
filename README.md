@@ -18,7 +18,7 @@ And if you see "Dev Container: Rust Template" in the bottom left corner, you're 
 ## The following are installed.
 
 - Docker image
-    - rust:1.59-buster
+    - rust:1.66-buster
 - CLI tools
     - git
     - cargo-edit
